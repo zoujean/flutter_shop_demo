@@ -11,12 +11,13 @@ class CategoryModel {
 
   factory CategoryModel.fromJson(dynamic json) {
     return CategoryModel(
-      data: json['data'],
+      data: CategoryBigListModel.formJson(json['data']).data,
       code: json['code'],
       message: json['message']
     );
   }
 }
+
 
 class CategoryBigModel {
   String mallCategoryId; // 类别编号
@@ -50,9 +51,41 @@ class CategoryBigListModel {
   CategoryBigListModel(this.data);
   factory CategoryBigListModel.formJson(List json){
     return CategoryBigListModel(
-      json.map((i)=>CategoryBigModel.fromJson((i))).toList()
+      json.map((item)=>CategoryBigModel.fromJson((item))).toList()
     );
   }
   
 }
 
+class BxMallSubDtoModel {
+  String mallSubId;
+  String mallCategoryId;
+  String mallSubName;
+  dynamic comments;
+
+  BxMallSubDtoModel({
+    this.mallSubId,
+    this.mallCategoryId,
+    this.mallSubName,
+    this.comments,
+  });
+
+  factory BxMallSubDtoModel.fromJson(dynamic json){
+    return BxMallSubDtoModel(
+      mallSubId: json['mallSubId'],
+      mallCategoryId: json['mallCategoryId'],
+      mallSubName: json['mallSubName'],
+      comments: json['comments'],
+    );
+  }
+}
+
+class BxMallSubDtoListModel {
+  List<BxMallSubDtoModel> data;
+  BxMallSubDtoListModel(this.data);
+  factory BxMallSubDtoListModel.fromJson(List json){
+    return BxMallSubDtoListModel(
+      json.map((item) => BxMallSubDtoModel.fromJson(item)).toList()
+    );
+  }
+}
