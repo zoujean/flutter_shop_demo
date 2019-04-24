@@ -10,7 +10,7 @@ class CategoryGoodsListModel {
     message = json['message'];
     if (json['data'] != null) {
       data = new List<CategoryListData>();
-      json['data'].map((item) => data.add(CategoryListData.fromJson(item)));
+      json['data'].forEach((item) => data.add(CategoryListData.fromJson(item)));
     }
   }
 
