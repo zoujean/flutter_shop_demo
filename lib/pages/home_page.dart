@@ -159,6 +159,7 @@ import 'dart:convert';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import '../routers/application.dart';
 
 
 class HomePage extends StatefulWidget{
@@ -189,16 +190,6 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
     super.initState();
     page = 1;
     hotGoodsList=[];
-    var formPage={'page': page};
-    httpRequest('homePageBelowConten',formData:formPage).then((val){
-      var data=json.decode(val.toString());
-      List<Map> newGoodsList = (data['data'] as List ).cast();
-      setState(() {
-        hotGoodsList.addAll(newGoodsList);
-        page++; 
-      });
-    });
-    // _getHotGoods();
   }
 
   GlobalKey<EasyRefreshState> _easyRefreshKey = new GlobalKey<EasyRefreshState>();
@@ -345,6 +336,9 @@ class SwiperDiy extends StatelessWidget{
         pagination: new SwiperPagination(),
         control: new SwiperControl(),
         autoplay: true,
+        onTap: (int index){
+          Application.router.navigateTo(context, '/detail?id=${swiperDataList[index]['goodsId']}');
+        },
       ),
     );
   }
@@ -470,15 +464,17 @@ class Recommend extends StatelessWidget{
         scrollDirection: Axis.horizontal,
         itemCount: recommendList.length,
         itemBuilder: (context, index){
-          return _item(index);
+          return _item(context, index);
         },
       ),
     );
   }
 
-  Widget _item(index) {
+  Widget _item(BuildContext context, index) {
     return InkWell(
-      onTap: (){},
+      onTap: (){
+        Application.router.navigateTo(context, '/detail?id=${recommendList[index]['goodsId']}');
+      },
       child: Container(
         // height: ScreenUtil().setHeight(350),
         width: ScreenUtil().setWidth(250),
@@ -564,7 +560,9 @@ class Floors extends StatelessWidget{
     return Container(
       width: ScreenUtil().setWidth(375),
       child: InkWell(
-        onTap: (){print('点击了楼层商品');},
+        onTap: (){
+          Application.router.navigateTo(context, '/detail?id=${goods['goodsId']}');
+        },
         child: Image.network(goods['image']),
       ),
     );
@@ -616,7 +614,10 @@ class _HotGoodsState extends State<HotGoods>{
     if(widget.hotGoodsList.length != 0) {
       List<Widget> listWidget = widget.hotGoodsList.map((val){
         return InkWell(
-          onTap: (){print('点击了火爆商品');},
+          onTap: (){
+            print('点击了火爆商品');
+            Application.router.navigateTo(context, '/detail?id=${val['goodsId']}');
+          },
           child: Container(
             width: ScreenUtil().setWidth(372),
             padding: EdgeInsets.all(5.0),
