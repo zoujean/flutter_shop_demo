@@ -5,7 +5,7 @@ import '../config/service_url.dart';
 
 Future httpRequest(url, {formData}) async {
   try {
-    print('开始获取数据...${formData.toString()}');
+    print('开始获取数据...$url...${formData.toString()}');
     Response response;
     Dio dio = new Dio();
     dio.options.contentType = ContentType.parse('application/x-www-form-urlencoded');
@@ -24,6 +24,7 @@ Future httpRequest(url, {formData}) async {
   }
 }
 
+/*
 Future getHomePageContent(formData) async {
   // try {
   //   print('开始获取首页数据...');
@@ -63,3 +64,4 @@ Future getHomePageBeloConten(formData) async {
   // int formData{'page': 1};
   return httpRequest('homePageBelowConten', formData: formData);
 }
+*/
