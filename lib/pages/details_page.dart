@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provide/provide.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../provide/details_info.dart';
 
-import '../service/service_method.dart';
-import 'dart:convert';
-
 import './details_page/details_top_area.dart';
+import './details_page/details_explain.dart';
+import './details_page/details_tabbar.dart';
+import './details_page/details_web.dart';
+import './details_page/details_bottom.dart';
 
-import '../model/details.dart';
 
 class DetailsPage extends StatelessWidget{
   final String goodsId;
@@ -30,13 +31,25 @@ class DetailsPage extends StatelessWidget{
         future: _getBackInfo(context),
         builder: (context, snapshot){
           if(snapshot.hasData){
-            // Provide.value<DetailsInfoProvide>(context).setGoodsInfo(snapshot.data);
-            return Container(
-              child: Column(
-                children: <Widget>[
-                  // DetailsTopArea(),
-                ],
-              ),
+            return Stack(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(bottom: ScreenUtil().setHeight(80)),
+                  child: ListView(
+                    children: <Widget>[
+                      DetailsTopArea(),
+                      DetailsExplain(),
+                      DetailsTabbar(),
+                      DetailsWeb()
+                    ],
+                  ),
+                ),
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  child: DetailsBottom(),
+                )
+              ],
             );
           }else{
             return Text('加载中');
@@ -47,10 +60,7 @@ class DetailsPage extends StatelessWidget{
   }
 
   Future _getBackInfo(BuildContext context)async{
-    var formData = { 'goodId':goodsId, };
-    var val = await httpRequest('getGoodDetailById',formData:formData);
-    var responseData= json.decode(val.toString());
-    DetailsModel goodsInfo = DetailsModel.fromJson(responseData);
-    return goodsInfo;
+    await Provide.value<DetailsInfoProvide>(context).getGoodsInfo(goodsId);
+    return '加载完成';
   }
 }
