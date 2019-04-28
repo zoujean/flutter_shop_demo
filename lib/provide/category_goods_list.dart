@@ -4,8 +4,13 @@ import '../model/categoryGoodsList.dart';
 class CategoryGoodsListProvide with ChangeNotifier{
   List<CategoryListData> goodsList = [];
 
-  getGoodsList(List<CategoryListData> list){
-    goodsList = list;
+  getGoodsList(int page, List<CategoryListData> list){
+    if(page == 1){
+      goodsList = [];
+    }
+    if (list != null) {
+      goodsList.addAll(list);
+    }
     notifyListeners();
   }
 }
