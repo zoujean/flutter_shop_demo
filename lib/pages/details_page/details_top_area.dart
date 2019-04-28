@@ -11,18 +11,17 @@ class DetailsTopArea  extends StatelessWidget {
     return Container(
       child: Provide<DetailsInfoProvide>(
         builder: (context, child, val){
-          // var goodsInfo = val.goodsInfo.data.goodInfo;
-          var goodsInfo = Provide.value<DetailsInfoProvide>(context).goodsInfo.data.goodInfo;
-          if(goodsInfo != null){
+          var goodInfo = val.goodsInfo.data.goodInfo;
+          if(goodInfo != null){
             return Container(
               color: Colors.white,
               padding: EdgeInsets.all(2.0),
               child: Column(
                 children: <Widget>[
-                  _goodsImage(goodsInfo.image1),
-                  _goodsName(goodsInfo.goodsName),
-                  _goodsNum(goodsInfo.goodsSerialNumber),
-                  _goodsPrice(goodsInfo.presentPrice, goodsInfo.oriPrice),
+                  _goodsImage(goodInfo.image1),
+                  _goodsName(goodInfo.goodsName),
+                  _goodsNum(goodInfo.goodsSerialNumber),
+                  _goodsPrice(goodInfo.presentPrice, goodInfo.oriPrice),
                 ],
               ),
             );
@@ -37,7 +36,8 @@ class DetailsTopArea  extends StatelessWidget {
   Widget _goodsImage(url){
     return Image.network(
       url,
-      width: ScreenUtil().setWidth(740)
+      width: ScreenUtil().setWidth(740),
+      height: ScreenUtil().setHeight(760)
     );
   }
 
