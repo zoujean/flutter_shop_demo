@@ -209,19 +209,6 @@ class _RightCategoryNavState extends State<RightCategoryNav> {
       ),
     );
   }
-
-  // void _getGoodList()async{
-  //   var data={
-  //     'categoryId':Provide.value<ChildCategory>(context).categoryId,
-  //     'categorySubId':Provide.value<ChildCategory>(context).subId,
-  //     'page':Provide.value<ChildCategory>(context).page
-  //   };
-  //   await httpRequest('getMallGoods',formData:data).then((val){
-  //     var res = json.decode(val.toString());
-  //     CategoryGoodsListModel goodsList = CategoryGoodsListModel.fromJson(res);
-  //     Provide.value<CategoryGoodsListProvide>(context).getGoodsList(goodsList.data);
-  //   });
-  // }
 }
 
 class CategoryGoodsList extends StatefulWidget {

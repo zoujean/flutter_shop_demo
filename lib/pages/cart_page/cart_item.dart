@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../model/cartInfo.dart';
+import './cart_count.dart';
+import 'package:provide/provide.dart';
+import '../../provide/cart.dart';
 
 class CartItem extends StatelessWidget {
   final CartInfoMode item;
@@ -9,7 +12,8 @@ class CartItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(5.0, 2.0, 5.0, 2.0),
+      margin: EdgeInsets.fromLTRB(0, 2.0, 0, 2.0),
+      width: ScreenUtil().setWidth(400),
       padding: EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -22,7 +26,7 @@ class CartItem extends StatelessWidget {
           _cartCheckBt(item),
           _cartImage(item),
           _cartGoodsName(item),
-          _cartPrice(item)
+          _cartPrice(context, item)
         ],
       ),
     );
@@ -31,7 +35,7 @@ class CartItem extends StatelessWidget {
   Widget _cartCheckBt(item){
     return Container(
       child: Checkbox(
-        value: true,
+        value: item.isCheck == true,
         activeColor:Colors.pink,
         onChanged: (bool val){},
       ),
@@ -56,22 +60,25 @@ class CartItem extends StatelessWidget {
       alignment: Alignment.topLeft,
       child: Column(
         children: <Widget>[
-          Text(item.goodsName)
+          Text(item.goodsName),
+          CartCount()
         ],
       ),
     );
   }
   //商品价格
-  Widget _cartPrice(item){
+  Widget _cartPrice(context, item){
     return Container(
-      width:ScreenUtil().setWidth(150) ,
+      width:ScreenUtil().setWidth(160) ,
       alignment: Alignment.centerRight,
       child: Column(
         children: <Widget>[
           Text('￥${item.price}'),
           Container(
             child: InkWell(
-              onTap: (){},
+              onTap: (){
+                Provide.value<CartProvide>(context).deleteOneGoods(item.goodsId);
+              },
               child: Icon(
                 Icons.delete_forever,
                 color: Colors.black26,

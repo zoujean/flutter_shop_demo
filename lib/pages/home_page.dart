@@ -1,158 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:dio/dio.dart';
-
-// class HomePage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     getHttp();
-//     return Scaffold(
-//       body:Center(
-//         child: Text('商城首页'),
-//       )
-//     );
-//   }
-
-//   void getHttp()async{
-//     try{
-//       Response response;
-//       response = await Dio().get(
-//         "https://www.easy-mock.com/mock/5c60131a4bed3a6342711498/baixing/dabaojian?name=大胸美女",
-//         //  queryParameters:data
-//       );
-//       return print(response);
-//     }catch(e){
-//       return print(e);
-//     }
-//   }
-
-// }
-
-// class HomePage extends StatefulWidget{
-//   @override
-//   _HomePageState createState() => _HomePageState();
-// }
-
-// class _HomePageState extends State<HomePage> {
-//   TextEditingController typeController = TextEditingController();
-//   String showText = '欢迎你来到美好人间';
-//   @override
-//   Widget build(BuildContext context) {
-//     // TODO: implement build
-//     return Scaffold(
-//       appBar: AppBar(title: Text('美好人间'),),
-//       body: SingleChildScrollView(
-//         child: Container(
-//           height: 1000,
-//           child: Column(
-//             children: <Widget>[
-//               TextField(
-//                 controller: typeController,
-//                 decoration: InputDecoration(
-//                   labelText: '类型',
-//                   helperText: '请输入你喜欢的类型',
-//                   contentPadding: EdgeInsets.all(10),
-//                   hintText: '请输入',
-//                   // hintStyle: TextStyle(height: 2)
-//                 ),
-//                 autofocus: false,
-//               ),
-//               RaisedButton(
-//                 onPressed: _choiceAction,
-//                 child: Text('选择完毕'),
-//               ),
-//               Text(
-//                 showText,
-//                 overflow: TextOverflow.ellipsis,
-//                 maxLines: 2,
-//               )
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-
-//   void _choiceAction() {
-//     print('请选择你喜欢的类型...');
-//     // if(typeController.text.toString() == '') {
-//     //   showDialog(
-//     //     context: context,
-//     //     builder: (context)=>AlertDialog(title: Text('类型不能为空'),)
-//     //   );
-//     // } else {
-//       getHttp(typeController.text.toString()).then((val){
-//         setState(() {
-//           showText = val['data']['name'].toString();
-//         });
-//       });
-//     // }
-//   }
-
-//   Future getHttp(String typeText)async{
-//     try{
-//       Response response;
-//       var data = {"name": typeText};
-//       // response = await Dio().get("https://www.easy-mock.com/mock/5c60131a4bed3a6342711498/baixing/dabaojian", queryParameters: data);
-//       response = await Dio().post("https://www.easy-mock.com/mock/5cb57d8b58a14f2b2173886f/shop/baixing/dabaojian", queryParameters: data);
-//       return response.data;
-//     }catch(e){
-//       return print(e);
-//     }
-//   }
-// }
-
-// import '../config/httpHeaders.dart';
-
-// class HomePage extends StatefulWidget{
-//   @override
-//   _HomePageState createState() => _HomePageState();
-// }
-
-// class _HomePageState extends State<HomePage>{
-//   String showText = '还没有请求数据';
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: Text('请求远程数据'),),
-//       body: Container(
-//         child: SingleChildScrollView(
-//           child: Column(
-//             children: <Widget>[
-//               RaisedButton(
-//                 onPressed: _sendRequest,
-//                 child: Text('发送请求'),
-//               ),
-//               Text(showText)
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-
-//   void _sendRequest() {
-//     print('开始请求数据...');
-//     getHttp().then((val){
-//       setState(() {
-//         showText = val['data'].toString();
-//       });
-//     });
-//   }
-
-//   Future getHttp()async{
-//     try{
-//       Response response;
-//       Dio dio = new Dio();
-//       dio.options.headers = httpHeaders;
-//       response = await dio.post('https://time.geekbang.org/serv/v1/column/newAll');
-//       print(response);
-//       return response.data;
-//     }catch(e){
-//       return print(e);
-//     }
-//   }
-// }
-
 import '../service/service_method.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'dart:convert';
@@ -168,17 +14,6 @@ class HomePage extends StatefulWidget{
 }
 
 class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
-  // String homePageContent = '正在获取数据';
-
-  // @override
-  // void initState(){
-  //   getHomePageContent().then((val){
-  //     setState(() {
-  //       homePageContent = val.toString();
-  //     });
-  //   });
-  //   super.initState();
-  // }
   @override
   bool get wantKeepAlive => true;
 
@@ -203,9 +38,6 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
 
     return Scaffold(
       appBar: AppBar(title: Text('百姓生活+'),),
-      // body: SingleChildScrollView(
-      //   child: Text(homePageContent),
-      // ),
       body: FutureBuilder(
         future: httpRequest('homePageContext', formData:formData),
         builder: (context, snapshot){
