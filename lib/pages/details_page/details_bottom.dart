@@ -4,6 +4,7 @@ import 'package:provide/provide.dart';
 import '../../provide/details_info.dart';
 import '../../provide/cart.dart';
 import '../../routers/application.dart';
+import '../../provide/currentIndex.dart';
 
 class DetailsBottom extends StatelessWidget {
   const DetailsBottom({Key key}) : super(key: key);
@@ -27,14 +28,49 @@ class DetailsBottom extends StatelessWidget {
           children: <Widget>[
             InkWell(
               onTap: (){
-                Application.router.navigateTo(context, '/cart');
+                // Application.router.navigateTo(context, '/cart');
+                Provide.value<CurrentIndexProvide>(context).changeIndex(2);
+                Navigator.pop(context);
               },
-              child: Container(
-                width: ScreenUtil().setWidth(110),
-                alignment: Alignment.center,
-                child: Icon(Icons.shopping_cart, color: Colors.red, size: 32,),
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    width: ScreenUtil().setWidth(110),
+                    alignment: Alignment.center,
+                    child: Icon(Icons.shopping_cart, color: Colors.red, size: 32,),
+                  ),
+                  Provide<CartProvide>(
+                    builder: (context, child, val){
+                      int goodsCount = val.allGoodsCount;
+                      if(goodsCount > 0){
+                        return Positioned(
+                          top: 0,
+                          right: 5,
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(5,3,5,3),
+                            decoration: BoxDecoration(
+                              color:Colors.pink,
+                              border:Border.all(width: 2,color: Colors.white),
+                              borderRadius: BorderRadius.circular(12.0)
+                            ),
+                            child: Text(
+                              '$goodsCount',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: ScreenUtil().setSp(16)
+                              ),
+                            ),
+                          ),
+                        );
+                      }else{
+                        return Text('');
+                      }
+                    },
+                  )
+                ],
               ),
             ),
+            
             InkWell(
               onTap: ()async{
                 await Provide.value<CartProvide>(context).save(goodsId, goodsName, count, price, image);

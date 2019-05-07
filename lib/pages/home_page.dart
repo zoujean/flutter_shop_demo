@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
                 ],
               ),
               loadMore: () async{
-                print('开始加载更多');
+                // print('开始加载更多');
                 var formPage={'page': page};
                 httpRequest('homePageBelowConten',formData:formPage).then((val){
                   var data=json.decode(val.toString());
