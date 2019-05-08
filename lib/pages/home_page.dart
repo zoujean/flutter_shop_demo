@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import '../service/service_method.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'dart:convert';
@@ -66,41 +67,45 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
                 'goodsList': (data['data']['floor3'] as List).cast()
               }
             ];
-            return EasyRefresh(
-              key: _easyRefreshKey,
-              child: ListView(
-                children: <Widget>[
-                  // TopSearch(),
-                  SwiperDiy(swiperDataList: swiperDataList),
-                  TopNavigator(navagatorList: navagatorList),
-                  AdBanner(advertesPicture: advertesPicture),
-                  LeaderPhone(leaderImage: leaderImage, leaderPhone: leaderPhone),
-                  Recommend(recommendList: recommendList),
-                  Floors(floorList: floorList),
-                  HotGoods(hotGoodsList:hotGoodsList)
-                ],
-              ),
-              loadMore: () async{
-                // print('开始加载更多');
-                var formPage={'page': page};
-                httpRequest('homePageBelowConten',formData:formPage).then((val){
-                  var data=json.decode(val.toString());
-                  List<Map> newGoodsList = (data['data'] as List ).cast();
-                  setState(() {
-                    hotGoodsList.addAll(newGoodsList);
-                    page++; 
+            return GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: (){FocusScope.of(context).requestFocus(FocusNode());},
+              child: EasyRefresh(
+                key: _easyRefreshKey,
+                child: ListView(
+                  children: <Widget>[
+                    TopSearch(),
+                    SwiperDiy(swiperDataList: swiperDataList),
+                    TopNavigator(navagatorList: navagatorList),
+                    AdBanner(advertesPicture: advertesPicture),
+                    LeaderPhone(leaderImage: leaderImage, leaderPhone: leaderPhone),
+                    Recommend(recommendList: recommendList),
+                    Floors(floorList: floorList),
+                    HotGoods(hotGoodsList:hotGoodsList)
+                  ],
+                ),
+                loadMore: () async{
+                  // print('开始加载更多');
+                  var formPage={'page': page};
+                  httpRequest('homePageBelowConten',formData:formPage).then((val){
+                    var data=json.decode(val.toString());
+                    List<Map> newGoodsList = (data['data'] as List ).cast();
+                    setState(() {
+                      hotGoodsList.addAll(newGoodsList);
+                      page++; 
+                    });
                   });
-                });
-              },
-              refreshFooter: ClassicsFooter(
-                key: _footerKey,
-                bgColor:Colors.white,
-                textColor: Colors.pink,
-                moreInfoColor: Colors.pink,
-                showMore: true,
-                noMoreText: '',
-                moreInfo: '加载中',
-                loadReadyText:'上拉加载....'
+                },
+                refreshFooter: ClassicsFooter(
+                  key: _footerKey,
+                  bgColor:Colors.white,
+                  textColor: Colors.pink,
+                  moreInfoColor: Colors.pink,
+                  showMore: true,
+                  noMoreText: '',
+                  moreInfo: '加载中',
+                  loadReadyText:'上拉加载....'
+                ),
               ),
             );
           } else {
@@ -120,25 +125,72 @@ class TopSearch extends StatefulWidget{
 }
 
 class _TopSearchState extends State<TopSearch>{
-  TextEditingController searchController = new TextEditingController();
   @override
   Widget build(BuildContext context) {
+    TextEditingController searchController = new TextEditingController();
+    searchController.addListener((){
+      // print('输入内容：${searchController.text}');
+    });
+    FocusNode _contentFocusNode = FocusNode();
     // TODO: implement build
     return Container(
       height: ScreenUtil().setHeight(80),
-      child: Row(
+      color: Colors.pink,
+      child: Stack(
         children: <Widget>[
-          Icon(Icons.location_on),
-          // TextField(
-          //   controller: searchController,
-          //   decoration: InputDecoration(
-          //     hintText: '搜索喜欢的商品吧'
-          //   ),
-          //   autofocus: false,
-          // ),
-          RaisedButton(
-            onPressed: _searchProduct,
-            child: Text('搜索'),
+          Container(
+            margin: EdgeInsets.only(left: ScreenUtil().setWidth(80),right: ScreenUtil().setWidth(100)),
+            padding: EdgeInsets.only(top: ScreenUtil().setHeight(5)),
+            decoration: BoxDecoration(
+              border: Border(bottom: BorderSide(width: 1,color: Colors.white))
+            ),
+            child: TextField(
+              style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(28)),
+              controller: searchController,
+              focusNode: _contentFocusNode,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.fromLTRB(0,5,0,5),
+                hintText: '搜索喜欢的商品吧',
+                hintStyle: TextStyle(color: Colors.white70,fontSize: ScreenUtil().setSp(24)),
+                border: InputBorder.none,
+              ),
+              autofocus: false,
+              onChanged: (text){
+                // print('输入内容：$text');
+              },
+              onEditingComplete: (){
+                // print('输入内容：${searchController.text}');
+                FocusScope.of(context).requestFocus(FocusNode());
+              },
+            ),
+          ),
+          Positioned(
+            left: 0,
+            top: 0,
+            width: ScreenUtil().setWidth(80),
+            height: ScreenUtil().setHeight(80),
+            child: Center(child: Icon(Icons.location_on,color: Colors.white,),),
+          ),
+          Positioned(
+            right: 0,
+            top: 0,
+            width: ScreenUtil().setWidth(100),
+            height: ScreenUtil().setHeight(80),
+            child: Container(
+              margin: EdgeInsets.all(8),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5)
+              ),
+              child: InkWell(
+                onTap: (){
+                  print('点击首页搜索按钮');
+                  _contentFocusNode.unfocus();
+                },
+                child: Text('搜索',style: TextStyle(color: Colors.pink,fontSize: ScreenUtil().setSp(20)),),
+              ),
+            ),
           )
         ],
       ),
