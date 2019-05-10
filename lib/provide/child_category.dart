@@ -3,6 +3,7 @@ import '../model/category.dart';
 
 class ChildCategory with ChangeNotifier{
   List<BxMallSubDtoModel> childCategoryList = []; //商品列表
+  int listIndex = 0; //大类索引值
   int childIndex = 0; //子类索引值
   String categoryId = '4'; //大类ID
   String subId =''; //小类ID 
@@ -23,6 +24,12 @@ class ChildCategory with ChangeNotifier{
     all.comments = 'null';
     childCategoryList = [all];
     childCategoryList.addAll(list);
+    notifyListeners();
+  }
+
+  //改变大类索引
+  changeListIndex(int index){
+    listIndex = index;
     notifyListeners();
   }
 

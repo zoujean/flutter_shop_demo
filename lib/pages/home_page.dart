@@ -6,7 +6,10 @@ import 'dart:convert';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:provide/provide.dart';
 import '../routers/application.dart';
+import '../provide/currentIndex.dart';
+import '../provide/child_category.dart';
 
 
 class HomePage extends StatefulWidget{
@@ -183,7 +186,7 @@ class _TopSearchState extends State<TopSearch>{
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(5)
               ),
-              child: InkWell(
+              child: GestureDetector(
                 onTap: (){
                   print('点击首页搜索按钮');
                   _contentFocusNode.unfocus();
@@ -249,9 +252,11 @@ class TopNavigator extends StatelessWidget{
   }
 
   Widget _gridViewItemUI(BuildContext context, item){
-    return InkWell(
+    return GestureDetector(
       onTap: (){
-        print('点击了导航');
+        var index = navagatorList.indexOf(item);
+        Provide.value<ChildCategory>(context).changeListIndex(index);
+        Provide.value<CurrentIndexProvide>(context).changeIndex(1);
       },
       child: Column(
         children: <Widget>[
@@ -289,7 +294,7 @@ class LeaderPhone extends StatelessWidget{
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
-      child: InkWell(
+      child: GestureDetector(
         onTap: _launchURL,
         child: Image.network(leaderImage),
       ),
@@ -355,7 +360,7 @@ class Recommend extends StatelessWidget{
   }
 
   Widget _item(BuildContext context, index) {
-    return InkWell(
+    return GestureDetector(
       onTap: (){
         Application.router.navigateTo(context, '/detail?id=${recommendList[index]['goodsId']}');
       },
@@ -443,7 +448,7 @@ class Floors extends StatelessWidget{
   Widget _goodsItem(BuildContext context, Map goods) {
     return Container(
       width: ScreenUtil().setWidth(375),
-      child: InkWell(
+      child: GestureDetector(
         onTap: (){
           Application.router.navigateTo(context, '/detail?id=${goods['goodsId']}');
         },
@@ -497,7 +502,7 @@ class _HotGoodsState extends State<HotGoods>{
   Widget _wrapList() {
     if(widget.hotGoodsList.length != 0) {
       List<Widget> listWidget = widget.hotGoodsList.map((val){
-        return InkWell(
+        return GestureDetector(
           onTap: (){
             print('点击了火爆商品');
             Application.router.navigateTo(context, '/detail?id=${val['goodsId']}');

@@ -5,7 +5,7 @@ import './router_handler.dart';
 class Routes{
   static String root = '/';
   static String detailsPage = '/detail';
-  static String cartPage = '/cart';
+  // static String cartPage = '/cart';
   static void configureRoutes (Router router) {
     router.notFoundHandler = new Handler(
       handlerFunc: (BuildContext context, Map<String, List<String>> params){
@@ -13,6 +13,6 @@ class Routes{
       }
     );
     router.define(detailsPage, handler: detailsHandler);
-    router.define(cartPage, handler: cartHandler);
+    // router.define(cartPage, handler: cartHandler);
   }
 }

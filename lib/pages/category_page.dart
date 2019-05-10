@@ -220,14 +220,6 @@ class CategoryGoodsList extends StatefulWidget {
 }
 
 class _CategoryGoodsListState extends State<CategoryGoodsList> {
-
-  // List list = [];
-
-  // @override
-  // void initState() {
-  //   _getGoodList();
-  //   super.initState();
-  // }
   GlobalKey<EasyRefreshState> _easyRefreshKey = new GlobalKey<EasyRefreshState>();
   GlobalKey<RefreshHeaderState> _easyRefreshHeaderKey = new GlobalKey<RefreshHeaderState>();
   GlobalKey<RefreshFooterState> _easyRefreshFooterKey = new GlobalKey<RefreshFooterState>();
