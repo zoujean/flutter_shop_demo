@@ -8,6 +8,7 @@ import './details_page/details_explain.dart';
 import './details_page/details_tabbar.dart';
 import './details_page/details_web.dart';
 import './details_page/details_bottom.dart';
+import './details_page/count_controller.dart';
 
 
 class DetailsPage extends StatelessWidget{
@@ -30,6 +31,7 @@ class DetailsPage extends StatelessWidget{
       body: FutureBuilder(
         future: _getBackInfo(context),
         builder: (context, snapshot){
+          Provide.value<DetailsInfoProvide>(context).initState();
           if(snapshot.hasData){
             return Stack(
               children: <Widget>[
@@ -48,6 +50,19 @@ class DetailsPage extends StatelessWidget{
                   bottom: 0,
                   left: 0,
                   child: DetailsBottom(),
+                ),
+                Provide<DetailsInfoProvide>(
+                  builder: (context, child, val){
+                    if(val.countController){
+                      return Positioned(
+                        bottom: 0,
+                        left: 0,
+                        child: CountController(),
+                      );
+                    }else{
+                      return Text('');
+                    }
+                  },
                 )
               ],
             );

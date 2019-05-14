@@ -199,10 +199,6 @@ class _TopSearchState extends State<TopSearch>{
       ),
     );
   }
-
-  void _searchProduct() {
-    return(print('搜索商品'));
-  }
 }
 
 class SwiperDiy extends StatelessWidget{
@@ -421,7 +417,10 @@ class Floors extends StatelessWidget{
   Widget _floorTitle(BuildContext context, title) {
     return Container(
       padding: EdgeInsets.all(8.0),
-      child: Image.network(title),
+      child: GestureDetector(
+        onTap: (){Provide.value<CurrentIndexProvide>(context).changeIndex(1);},
+        child: Image.network(title),
+      ),
     );
   }
 

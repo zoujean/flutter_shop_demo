@@ -9,6 +9,7 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import '../model/categoryGoodsList.dart';
 import '../provide/category_goods_list.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import '../routers/application.dart';
 
 class CategoryPage extends StatefulWidget {
   @override
@@ -81,7 +82,6 @@ class LeftCategoryNav extends StatefulWidget{
 
 class _LeftCategoryNavState extends State<LeftCategoryNav>{
   List list = [];
-  int listIndex = 0;
   
   @override
   void initState() {
@@ -91,20 +91,25 @@ class _LeftCategoryNavState extends State<LeftCategoryNav>{
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: ScreenUtil().setWidth(180),
-      decoration: BoxDecoration(
-        border: Border(
-          right: BorderSide(width: 1,color:Colors.black12)
-        )
-      ),
-      child: ListView.builder(
-        scrollDirection: Axis.vertical,
-        itemCount:list.length,
-        itemBuilder: (context,index){
-          return _leftInkWell(index);
-        },
-      ),
+    return Provide<ChildCategory>(
+      builder: (context,child,val){
+        var listindex = val.listIndex;
+        return Container(
+          width: ScreenUtil().setWidth(180),
+          decoration: BoxDecoration(
+            border: Border(
+              right: BorderSide(width: 1,color:Colors.black12)
+            )
+          ),
+          child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            itemCount:list.length,
+            itemBuilder: (context,index){
+              return _leftInkWell(context, index, listindex);
+            },
+          ),
+        );
+      },
     );
   }
 
@@ -116,7 +121,7 @@ class _LeftCategoryNavState extends State<LeftCategoryNav>{
         list = category.data;
       });
       // 右侧子类初始化赋值
-      _setProvideData(0);
+      _setProvideData(Provide.value<ChildCategory>(context).listIndex);
     });
   }
   void _setProvideData(int index){
@@ -127,13 +132,10 @@ class _LeftCategoryNavState extends State<LeftCategoryNav>{
     widget.getGoodList();
   }
 
-  Widget _leftInkWell(int index){
+  Widget _leftInkWell(context, int index, int listIndex){
     return InkWell(
       onTap: (){
-        setState(() {
-          listIndex = index;
-        });
-
+        Provide.value<ChildCategory>(context).changeListIndex(index);
         _setProvideData(index);
       },
       child: Container(
@@ -352,7 +354,9 @@ class _CategoryGoodsListState extends State<CategoryGoodsList> {
     if(list.length > 0) {
       List<Widget> listWidget = list.map((val){
         return InkWell(
-          onTap: (){},
+          onTap: (){
+            Application.router.navigateTo(context, '/detail?id=${val.goodsId}');
+          },
           child: Container(
             width: ScreenUtil().setWidth(285),
             padding: EdgeInsets.only(top: 5.0,bottom: 5.0),

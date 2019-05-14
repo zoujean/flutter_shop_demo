@@ -25,8 +25,8 @@ class CartProvide with ChangeNotifier{
     allGoodsCount=0;
     tempList.forEach((item){
       if(item['goodsId'] == goodsId){
-        tempList[ival]['count'] = item['count'] + 1;
-        cartList[ival].count++;
+        tempList[ival]['count'] = item['count'] + count;
+        cartList[ival].count+=count;
         isHave = true;
       }
       if(item['isCheck']){
@@ -51,11 +51,13 @@ class CartProvide with ChangeNotifier{
     }
     cartString = json.encode(tempList).toString();
     prefs.setString('cartInfo', cartString);
+    notifyListeners();
   }
 
   remove() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('cartInfo');
+    cartList = [];
     allPrice = 0;
     allGoodsCount = 0;
     notifyListeners();
@@ -141,7 +143,7 @@ class CartProvide with ChangeNotifier{
     await getCartInfo(); //重新读取列表
   }
 
-  addOrReduceAction(var cartItem, String todo )async{
+  addOrReduceAction(var cartItem, String todo)async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     cartString = prefs.getString('cartInfo');
     List<Map> tempList = (json.decode(cartString.toString()) as List).cast();

@@ -8,7 +8,16 @@ class DetailsInfoProvide with ChangeNotifier{
 
   bool isLeft = true;
   bool isRight = false;
+  bool countController = false;
+  int count = 1;
 
+  initState(){
+    count = 1;
+    isLeft = true;
+    isRight = false;
+    countController = false;
+    notifyListeners();
+  }
   //从后台获取商品信息
 
   getGoodsInfo(String id)async{
@@ -26,6 +35,22 @@ class DetailsInfoProvide with ChangeNotifier{
     }else{
       isLeft = false;
       isRight = true;
+    }
+    notifyListeners();
+  }
+  changeController(String changeState){
+    if(changeState == 'show'){
+      countController = true;
+    }else{
+      countController = false;
+    }
+    notifyListeners();
+  }
+  addOrReduceAction(String todo){
+    if(todo=='add'){
+      count++;
+    }else if(count>1){
+      count--;
     }
     notifyListeners();
   }

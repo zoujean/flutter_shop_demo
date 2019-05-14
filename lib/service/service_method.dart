@@ -5,7 +5,7 @@ import '../config/service_url.dart';
 
 Future httpRequest(url, {formData}) async {
   try {
-    print('开始获取数据...$url...${formData.toString()}');
+    // print('开始获取数据...$url...${formData.toString()}');
     Response response;
     Dio dio = new Dio();
     dio.options.contentType = ContentType.parse('application/x-www-form-urlencoded');
