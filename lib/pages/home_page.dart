@@ -249,9 +249,9 @@ class TopNavigator extends StatelessWidget{
 
   Widget _gridViewItemUI(BuildContext context, item){
     return GestureDetector(
-      onTap: (){
+      onTap: ()async{
         var index = navagatorList.indexOf(item);
-        Provide.value<ChildCategory>(context).changeListIndex(index);
+        await Provide.value<ChildCategory>(context).changeListIndex(index);
         Provide.value<CurrentIndexProvide>(context).changeIndex(1);
       },
       child: Column(

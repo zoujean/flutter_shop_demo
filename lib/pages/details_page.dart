@@ -67,7 +67,9 @@ class DetailsPage extends StatelessWidget{
               ],
             );
           }else{
-            return Text('加载中');
+            return Center(
+              child: Text('加载中'),
+            );
           }
         },
       ),
